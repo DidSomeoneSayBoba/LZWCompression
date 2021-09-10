@@ -28,7 +28,7 @@ public class LZW {
 			}
 			else
 			{
-				current = next;
+				current = next;  
 			}
 			next = ""+((char)(reader.read()));
 		}
