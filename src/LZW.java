@@ -1,9 +1,9 @@
 import java.util.*;
 import java.io.*;
 
-public class LZWCompressionZach{
+public class LZW{
     final int NUM=9;
-    public LZWCompressionZach()
+    public LZW()
     {
         
     }
