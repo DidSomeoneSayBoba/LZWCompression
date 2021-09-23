@@ -20,16 +20,17 @@ Time Elapsed Original end: 11
 Optimized Times:
 Compression:
 file1
-Time Elapsed: 10
+Time Elapsed: 13
 File2
-Time Elapsed: 65
+Time Elapsed: 47
 File3
-Time Elapsed: 62
+Time Elapsed: 65
 
 Decompression:
 File1
-Time Elapsed decompress: 1
+Time Elapsed decompress: 2
 File2
-Time Elapsed decompress: 12
-E R R O R (Time Elapsed decompress = 0 due to compression being empty)
+Time Elapsed decompress: 21
+File3
+Time Elapsed decompress: 19
 

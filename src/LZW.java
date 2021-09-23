@@ -25,7 +25,7 @@ public class LZW{
     	PrintWriter writer = new PrintWriter(o);
 		while(reader.ready())
 		{
-			//optimized to fit to bitsize
+			//max entry size is 2^NUM
 			if(!dict.contains(current+next)&&dict.size()<Math.pow(2,NUM))
 			{
 				//begin binary conversion code(seems like decoder-writer intended to do this)
@@ -90,7 +90,7 @@ public class LZW{
             
 
                
-            
+            writer.close();
             long finish = System.currentTimeMillis();
     		System.out.println("Time Elapsed decompress: "+(finish - start));
     		
