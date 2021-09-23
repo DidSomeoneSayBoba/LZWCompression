@@ -3,47 +3,40 @@ import java.io.*;
 
 public class LZW{
     final int NUM=9;
+
     ArrayList<String> initialdict;
     public LZW()
     {
-    	//initializes 0-255 dictionary for use in both methods
-    	initialdict = new ArrayList();
-    	for(int i =0;i<=255;i++)
-		{
-			initialdict.add(""+(char)i);
-		}
-       
+        //initialized dictionary to save time in each method
+    	resetArray();
     }
-    private void writeToFile(File file,String str) throws IOException{
-    	//modified to just write to file (file)the input string str
-        try(FileWriter os=new FileWriter(file)){
-            os.write(str);
-            os.close();
-        }
-    }
+
     public void convertToBinary(File file) throws IOException{
     	long start = System.currentTimeMillis();
     	
 		StringBuilder ret = new StringBuilder("");
-		ArrayList<String> dict = initialdict;
+		//each index represents each index
+		ArrayList<String> dict = new ArrayList(initialdict);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
-
-		
 		String current = ""+((char)(reader.read()));
 		String next = ""+((char)(reader.read()));
+		FileWriter os=new FileWriter("compressed"+file.getName());
+		BufferedWriter o = new BufferedWriter(os);
+    	PrintWriter writer = new PrintWriter(o);
 		while(reader.ready())
 		{
 			//optimized to fit to bitsize
 			if(!dict.contains(current+next)&&dict.size()<Math.pow(2,NUM))
 			{
+				//begin binary conversion code(seems like decoder-writer intended to do this)
 				dict.add(current+next);
 				//get most recent dict index, convert to binary str, pad out zeroes
 				String binaryver = Integer.toBinaryString((dict.size()-1));
 				binaryver = String.format("%"+NUM+"s",binaryver);
 				binaryver = binaryver.replaceAll(" ","0");
 				//write
-				ret.append(binaryver);
-				
+		        writer.print(binaryver);
+
 				//System.out.println(ret.toString());
 				current +=next;
 			}
@@ -54,16 +47,28 @@ public class LZW{
 			}
 			next = ""+((char)(reader.read()));
 		}
-		File out = new File("compressed"+file.getName());
-		writeToFile(out, ret.toString());
+		writer.close();
+		
 		long finish = System.currentTimeMillis();
-		System.out.println("Time Elapsed Original: "+(finish - start));
+		System.out.println("Time Elapsed: "+(finish - start));
 	}
-        public String decompress(String compressed){//changed to void to match compression
+        public void decompress(String compressed, String outname) throws IOException{//changed to void to match compression
         	long start = System.currentTimeMillis();
-            ArrayList<String> dict=initialdict;
+        	ArrayList<String> dict = new ArrayList(initialdict);
+        	
             
-            String prev=""+(char)(Integer.parseInt(compressed.substring(0,NUM),2)),decompressed=prev;
+            FileWriter os=new FileWriter(outname);
+            		BufferedWriter o = new BufferedWriter(os);
+        	PrintWriter writer = new PrintWriter(o);
+        	if(compressed.length()<NUM)
+        	{
+        		long finish = System.currentTimeMillis();
+        		System.out.println("Time Elapsed decompress: "+(finish - start));
+        		writer.print("file empty");
+        		writer.close();
+        		return;
+        	}
+        	String prev=""+(char)(Integer.parseInt(compressed.substring(0,NUM),2)),decompressed=prev;
             int c=0;
             while(compressed.length()>NUM){
                 c=Integer.parseInt(compressed.substring(NUM,2*NUM),2);
@@ -73,20 +78,49 @@ public class LZW{
                     decompressed+=dict.get(c);
                 }
                 else{
+                	
                     dict.add(prev+prev.charAt(0));
+
                     decompressed+=prev+prev.charAt(0);
                 }
-                prev=dict.get(c);
+                prev=dict.get(c-1);
                 compressed=compressed.substring(NUM);
             }
+            writer.print(decompressed);
+            
+
+               
             
             long finish = System.currentTimeMillis();
-    		System.out.println("Time Elapsed Original: "+(finish - start));
-    		return(decompressed);
+    		System.out.println("Time Elapsed decompress: "+(finish - start));
+    		
+    		
+    		
     }
-    /**
-     * writeToFile() and decompress() methods are working. I haven't touched the 
-     * convertToBinary() method since I forked initially. 
-     */
+
+        public String readFromFile(String file)
+        {
+        	
+        	StringBuffer builder = new StringBuffer();
+        	try {
+        		BufferedReader reader = new BufferedReader(new FileReader(new File(file)));
+				while(reader.ready())
+				{
+					builder.append(reader.readLine());
+				}
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	return builder.toString();
+        }
+        private void resetArray() {
+        	initialdict = new ArrayList();
+        	for(int i =0;i<=255;i++)
+    		{
+    			initialdict.add(""+(char)i);
+    		}
+        }
 }
 
