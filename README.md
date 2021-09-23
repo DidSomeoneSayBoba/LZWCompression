@@ -1,7 +1,7 @@
 (All time in ms)
-#Original Times:
+Original Times:
 
-##Compression:
+Compression:
 
 file1
 
@@ -16,16 +16,24 @@ file3
 Time Elapsed Original: 68ms
 
 
-##Decompression:
+Decompression:
+
 file1
+
 Time Elapsed Original end: 1ms
+
 file2
+
 Time Elapsed Original end: 16ms
+
 file3
+
 Time Elapsed Original end: 11ms
 
-#Optimized Times:
-##Compression:
+
+Optimized Times:
+
+Compression:
 
 file1
 
