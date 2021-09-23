@@ -12,7 +12,7 @@ public class LeTester {
 		lzw.convertToBinary(new File("lzw-file2.txt"));
 		lzw.convertToBinary(new File("lzw-file3.txt"));
 		String file = "compressedlzw-file1.txt";
-		lzw.decompress(lzw.readFromFile(file),"decompressedlzw-file1.txt");
+		lzw.decompress(lzw.readFromFile(file),"1.txt");
 		String file1 = "compressedlzw-file2.txt";
 		lzw.decompress(lzw.readFromFile(file1),"2.txt");
 		String file2 = "compressedlzw-file3.txt";

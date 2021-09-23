@@ -15,7 +15,6 @@ public class LZW{
     	long start = System.currentTimeMillis();
     	
 		StringBuilder ret = new StringBuilder("");
-		//each index represents each index
 		ArrayList<String> dict = new ArrayList(initialdict);
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 		String current = ""+((char)(reader.read()));
@@ -28,16 +27,15 @@ public class LZW{
 			//max entry size is 2^NUM
 			if(!dict.contains(current+next)&&dict.size()<Math.pow(2,NUM))
 			{
-				//begin binary conversion code(seems like decoder-writer intended to do this)
+				//begin binary conversion code(seems like encoder-writer intended to do this)
 				dict.add(current+next);
 				//get most recent dict index, convert to binary str, pad out zeroes
-				String binaryver = Integer.toBinaryString((dict.size()-1));
+				
+				String binaryver = Integer.toBinaryString(dict.indexOf(current));
 				binaryver = String.format("%"+NUM+"s",binaryver);
 				binaryver = binaryver.replaceAll(" ","0");
-				//write
+				//write to file
 		        writer.print(binaryver);
-
-				//System.out.println(ret.toString());
 				current +=next;
 			}
 			else
